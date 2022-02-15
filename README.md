@@ -1,1 +1,0 @@
-# VotingApplication
