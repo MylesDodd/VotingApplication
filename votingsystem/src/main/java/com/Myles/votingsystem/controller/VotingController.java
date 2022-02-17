@@ -2,6 +2,9 @@ package com.Myles.votingsystem.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,8 @@ import com.Myles.votingsystem.repositories.CitizenRepo;
 
 @Controller
 public class VotingController {
+	
+	public final Logger logger = Logger.getLogger(VotingController.class);
 
 	@Autowired
 	CitizenRepo citizenRepo;
@@ -25,15 +30,21 @@ public class VotingController {
 	
 	@RequestMapping("/")
 	public String goToVote( ) {
+		logger.info("Returning vote.html file");
 		return "vote.html";
 	}
 	
 	@RequestMapping("/doLogin")
-	public String doLogin(@RequestParam String name, Model model) {
+	public String doLogin(@RequestParam String name, Model model, HttpSession session) {
 		
+		logger.info("Getting citizen from database");
 		Citizen citizen = citizenRepo.findByName(name);
 		
+		logger.info("Putting citizen into session");
+		session.setAttribute("citizen", citizen);
+		
 		if(!citizen.getHasVoted()) {
+			logger.info("Putting candidates into model");
 			List<Candidate> candidates = candidateRepo.findAll();
 			for(Candidate c : candidates) {
 				model.addAttribute("candidates",candidates);
@@ -41,17 +52,30 @@ public class VotingController {
 			
 		 return"/performVote.html";
 		} else {
-			return "/alreadyVoted.html";
+		 return "/alreadyVoted.html";
 		}
 	}
 	
 	@RequestMapping("/voteFor")
-	public String voteFor(@RequestParam Long id) {
+	public String voteFor(@RequestParam Long id, HttpSession session) {
+		Citizen citizen = (Citizen)session.getAttribute("citizen");
+		
+		if(!citizen.getHasVoted()) {
+			
+		citizen.setHasVoted(true);
+		
 		Candidate c = candidateRepo.findById((long)id);
+		logger.info("voting for candidate" + c.getName());
 		c.setNumberOfVotes(c.getNumberOfVotes()+1);
+		
 		candidateRepo.save(c);
+		citizenRepo.save(citizen);
 		
 		return "voted.html";
+		}
+		
+		return "alreadyVoted.html";
+		
 	}
 	
 }
