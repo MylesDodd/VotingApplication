@@ -5,6 +5,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-perform vote
+
+<div th:each="candidate : ${candidates}">
+Click to vote for: 
+<a th:href="@{/voteFor(id=${candidate.id})}" th:text="${candidate.name}"></a>
+
+</div>
 </body>
 </html>

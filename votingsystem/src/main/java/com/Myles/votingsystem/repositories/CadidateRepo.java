@@ -7,5 +7,7 @@ import com.Myles.votingsystem.entity.Candidate;
 
 @Repository
 public interface CadidateRepo extends JpaRepository<Candidate, Integer> {
+	
+	public Candidate findById(long id);
 
 }

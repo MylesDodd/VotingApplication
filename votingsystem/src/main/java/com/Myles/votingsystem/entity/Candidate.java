@@ -42,6 +42,16 @@ public class Candidate {
 		this.name = name;
 	}
 	
+	@Column(name="numberOfVotes")
+	private Integer numberOfVotes;
+
+	public Integer getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(Integer numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
 	
 
 }
