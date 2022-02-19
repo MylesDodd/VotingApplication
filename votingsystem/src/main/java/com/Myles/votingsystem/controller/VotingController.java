@@ -8,6 +8,8 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,9 +32,16 @@ public class VotingController {
 	
 	@RequestMapping("/")
 	public String goToVote( ) {
-		logger.info("Returning vote.html file");
-		return "vote.html";
+		logger.info("Returning index.html file");
+		return "index.html";
 	}
+	
+	@RequestMapping("/signUp")
+	public String signUp() {
+		logger.info("Returning signUp.html file");
+		return "signUp.html";		
+	}
+	
 	
 	@RequestMapping("/doLogin")
 	public String doLogin(@RequestParam String name, Model model, HttpSession session) {
@@ -77,5 +86,31 @@ public class VotingController {
 		return "alreadyVoted.html";
 		
 	}
+	
+	@PostMapping("/signUpComplete")
+	public String createNewCitizen(@RequestParam String username, String password) {
+		
+		
+		int count = 1; 
+		List<Citizen> citizens = citizenRepo.findAll();
+		for (Citizen c : citizens) 
+		{
+					count ++ ;	
+			
+		}
+		
+		Citizen citizen = new Citizen();
+		citizen.setId((long)count);
+		citizen.setName(username);
+		citizen.setPassword(password);
+		citizen.setUserType("citizen");
+		citizen.setHasVoted(false);
+		
+		citizenRepo.save(citizen);
+		
+		return "index.html";
+		
+	}
+
 	
 }

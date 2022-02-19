@@ -42,6 +42,29 @@ public class Citizen {
 		this.name = name;
 	}
 	
+	@Column(name="password")
+	private String password;
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	@Column(name="user_type")
+	private String userType;
+		
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	@Column(name="hasvoted")
 	private Boolean hasVoted;
 

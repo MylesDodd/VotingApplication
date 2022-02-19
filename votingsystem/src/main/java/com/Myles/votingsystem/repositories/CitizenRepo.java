@@ -9,5 +9,5 @@ import com.Myles.votingsystem.entity.Citizen;
 public interface CitizenRepo extends JpaRepository<Citizen, Integer> {
 	
 	public Citizen findByName(String name);
-
+	
 }
