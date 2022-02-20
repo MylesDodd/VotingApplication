@@ -45,6 +45,20 @@ public class VotingController {
 		return "signUp.html";		
 	}
 	
+	@RequestMapping("/createAuditor")
+	public String createAuditor()
+	{
+		logger.info("Returning create auditor view");
+		return "createAuditor.html";
+	}
+	
+	@RequestMapping("/createCandidate")
+	public String createCandidate()
+	{
+		logger.info("Returning create candidate view");
+		return "createCandidate.html";
+	}
+	
 	
 	@RequestMapping("/doLogin")
 	public String doLogin(@RequestParam String name, Model model, HttpSession session) {
@@ -75,6 +89,7 @@ public class VotingController {
 		
 		else if (User.getUserType() == 2) 
 		{
+			logger.info("returning adminIndex view for admin user");
 			
 			return "adminIndex.html";
 			
@@ -82,6 +97,7 @@ public class VotingController {
 		
 		else if (User.getUserType() == 3) 
 		{
+			logger.info("returning auditorIndex view for auditor user");
 			
 			return "auditorIndex.html";
 			
@@ -119,7 +135,7 @@ public class VotingController {
 	public String createNewUser(@RequestParam String username, String password) {
 		
 		
-		int count = 1; 
+		int count = 0; 
 		List<User> Users = userRepo.findAll();
 		for (User c : Users) 
 		{
@@ -128,7 +144,7 @@ public class VotingController {
 		}
 		
 		User User = new User();
-		User.setId((long)count);
+		User.setId((long)count+1);
 		User.setName(username);
 		User.setPassword(password);
 		User.setUserType((long)1);
@@ -137,6 +153,57 @@ public class VotingController {
 		userRepo.save(User);
 		
 		return "index.html";
+		
+	}
+	
+	
+	
+	@PostMapping("/createCandidateComplete")
+	public String createNewCandidate(@RequestParam String name) {
+		
+		
+		int count = 0; 
+		List<Candidate> Candidates = candidateRepo.findAll();
+		for (Candidate c : Candidates) 
+		{
+					count ++ ;	
+			
+		}
+		
+		Candidate Candidate = new Candidate();
+		Candidate.setId((long)count+1);
+		Candidate.setName(name);
+		Candidate.setNumberOfVotes(0);
+		
+		candidateRepo.save(Candidate);
+		
+		return "adminIndex.html";
+		
+	}
+	
+	
+	@PostMapping("/createAuditorComplete")
+	public String createNewAuditor(@RequestParam String username, String password) {
+		
+		
+		int count = 0; 
+		List<User> Users = userRepo.findAll();
+		for (User c : Users) 
+		{
+					count ++ ;	
+			
+		}
+		
+		
+		User User = new User();
+		User.setId((long)count+1);
+		User.setName(username);
+		User.setPassword(password);
+		User.setUserType((long)3);
+		
+		userRepo.save(User);
+		
+		return "adminIndex.html";
 		
 	}
 
