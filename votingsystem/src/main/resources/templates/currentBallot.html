@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Current Ballot</title>
+</head>
+<body>
+
+
+<div th:each="candidate : ${candidates}">
+Candidates:
+<a th:text="${candidate.name}"></a>
+Votes:
+<a th:text="${candidate.numberOfVotes}"></a>
+
+</div>
+</body>
+</html>

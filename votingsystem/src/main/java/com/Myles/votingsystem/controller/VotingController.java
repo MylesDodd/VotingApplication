@@ -31,7 +31,6 @@ public class VotingController {
 	@Autowired
 	CadidateRepo candidateRepo;
 	
-
 	
 	@RequestMapping("/")
 	public String goToVote( ) {
@@ -98,14 +97,21 @@ public class VotingController {
 		else if (User.getUserType() == 3) 
 		{
 			logger.info("returning auditorIndex view for auditor user");
+						
+			logger.info("Putting candidates into model");
+			List<Candidate> candidates = candidateRepo.findAll();
+			for(Candidate c : candidates) {
+				model.addAttribute("candidates",candidates);
+			}
 			
-			return "auditorIndex.html";
+			return "/currentBallot.html";
 			
 		}
 		
 		else return "/index.html";
 							
 	}
+	
 	
 	@RequestMapping("/voteFor")
 	public String voteFor(@RequestParam Long id, HttpSession session) {
@@ -130,6 +136,7 @@ public class VotingController {
 		return "alreadyVoted.html";
 		
 	}
+	
 	
 	@PostMapping("/signUpComplete")
 	public String createNewUser(@RequestParam String username, String password) {
@@ -206,6 +213,5 @@ public class VotingController {
 		return "adminIndex.html";
 		
 	}
-
-	
+		
 }
