@@ -59,8 +59,8 @@ public class Admin {
 		return userType;
 	}
 
-	public void setUserGroup(String userGroup) {
-		this.userType = userGroup;
+	public void setUserGroup(String userType) {
+		this.userType = userType;
 	}
 
 	public Admin(Long id, String name, String userGroup, String password) {
