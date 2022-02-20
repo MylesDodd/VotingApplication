@@ -3,11 +3,11 @@ package com.Myles.votingsystem.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.Myles.votingsystem.entity.Citizen;
+import com.Myles.votingsystem.entity.User;
 
 @Repository
-public interface CitizenRepo extends JpaRepository<Citizen, Integer> {
+public interface UserRepo extends JpaRepository<User, Integer> {
 	
-	public Citizen findByName(String name);
+	public User findByName(String name);
 	
 }

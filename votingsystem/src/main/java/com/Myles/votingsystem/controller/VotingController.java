@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Myles.votingsystem.entity.Candidate;
-import com.Myles.votingsystem.entity.Citizen;
+import com.Myles.votingsystem.entity.User;
 import com.Myles.votingsystem.repositories.CadidateRepo;
-import com.Myles.votingsystem.repositories.CitizenRepo;
+import com.Myles.votingsystem.repositories.UserRepo;
+
 
 @Controller
 public class VotingController {
@@ -25,10 +26,12 @@ public class VotingController {
 	public final Logger logger = Logger.getLogger(VotingController.class);
 
 	@Autowired
-	CitizenRepo citizenRepo;
+	UserRepo userRepo;
 	
 	@Autowired
 	CadidateRepo candidateRepo;
+	
+
 	
 	@RequestMapping("/")
 	public String goToVote( ) {
@@ -46,39 +49,64 @@ public class VotingController {
 	@RequestMapping("/doLogin")
 	public String doLogin(@RequestParam String name, Model model, HttpSession session) {
 		
-		logger.info("Getting citizen from database");
-		Citizen citizen = citizenRepo.findByName(name);
 		
-		logger.info("Putting citizen into session");
-		session.setAttribute("citizen", citizen);
+		logger.info("Getting user from database");
+		User User = userRepo.findByName(name);
 		
-		if(!citizen.getHasVoted()) {
+		logger.info("Putting user into session");
+		session.setAttribute("User", User);
+		
+		if(User.getUserType() == 1) 
+		{
+			if(!User.getHasVoted()) {
+			
 			logger.info("Putting candidates into model");
 			List<Candidate> candidates = candidateRepo.findAll();
 			for(Candidate c : candidates) {
 				model.addAttribute("candidates",candidates);
 			}
 			
-		 return"/performVote.html";
-		} else {
-		 return "/alreadyVoted.html";
+			return "/performVote.html";
+			
+			}
+			
+			else return "/alreadyVoted.html";
 		}
+		
+		else if (User.getUserType() == 2) 
+		{
+			
+			return "adminIndex.html";
+			
+		}
+		
+		else if (User.getUserType() == 3) 
+		{
+			
+			return "auditorIndex.html";
+			
+		}
+		
+		else return "/index.html";
+							
 	}
 	
 	@RequestMapping("/voteFor")
 	public String voteFor(@RequestParam Long id, HttpSession session) {
-		Citizen citizen = (Citizen)session.getAttribute("citizen");
+		User User = (User)session.getAttribute("User");
 		
-		if(!citizen.getHasVoted()) {
+		if(!User.getHasVoted()) {
 			
-		citizen.setHasVoted(true);
+
+
+		User.setHasVoted(true);
 		
 		Candidate c = candidateRepo.findById((long)id);
 		logger.info("voting for candidate" + c.getName());
 		c.setNumberOfVotes(c.getNumberOfVotes()+1);
 		
 		candidateRepo.save(c);
-		citizenRepo.save(citizen);
+		userRepo.save(User);
 		
 		return "voted.html";
 		}
@@ -88,25 +116,25 @@ public class VotingController {
 	}
 	
 	@PostMapping("/signUpComplete")
-	public String createNewCitizen(@RequestParam String username, String password) {
+	public String createNewUser(@RequestParam String username, String password) {
 		
 		
 		int count = 1; 
-		List<Citizen> citizens = citizenRepo.findAll();
-		for (Citizen c : citizens) 
+		List<User> Users = userRepo.findAll();
+		for (User c : Users) 
 		{
 					count ++ ;	
 			
 		}
 		
-		Citizen citizen = new Citizen();
-		citizen.setId((long)count);
-		citizen.setName(username);
-		citizen.setPassword(password);
-		citizen.setUserType("citizen");
-		citizen.setHasVoted(false);
+		User User = new User();
+		User.setId((long)count);
+		User.setName(username);
+		User.setPassword(password);
+		User.setUserType((long)1);
+		User.setHasVoted(false);
 		
-		citizenRepo.save(citizen);
+		userRepo.save(User);
 		
 		return "index.html";
 		

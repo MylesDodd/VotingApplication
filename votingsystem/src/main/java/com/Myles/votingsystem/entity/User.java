@@ -5,11 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="citizens")
-public class Citizen {
+import org.springframework.lang.Nullable;
 
-	public Citizen() {
+@Entity
+@Table(name="users")
+public class User {
+
+	public User() {
 		super();
 	}
 
@@ -25,7 +27,7 @@ public class Citizen {
 		this.id = id;
 	}
 	
-	@Column(name="citizen_name")
+	@Column(name="user_name")
 	private String name;
 
 	public String getName() {
@@ -35,13 +37,17 @@ public class Citizen {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public Citizen(Long id, String name) {
+	
+	
+	public User(Long id, String name, String password, Long userType, Boolean hasVoted) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.password = password;
+		this.userType = userType;
+		this.hasVoted = hasVoted;
 	}
-	
+
 	@Column(name="password")
 	private String password;
 	
@@ -53,19 +59,20 @@ public class Citizen {
 		this.password = password;
 	}
 	
-	@Column(name="user_type")
-	private String userType;
-		
-
-	public String getUserType() {
+	
+	public Long getUserType() {
 		return userType;
 	}
 
-	public void setUserType(String userType) {
+	public void setUserType(Long userType) {
 		this.userType = userType;
 	}
 
-	@Column(name="hasvoted")
+	@Column(name="user_type")
+	public Long userType;
+
+	@Column(nullable=true, name="hasvoted")
+	@Nullable
 	private Boolean hasVoted;
 
 	public Boolean getHasVoted() {
