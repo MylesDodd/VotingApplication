@@ -63,12 +63,12 @@ public class Admin {
 		this.userType = userType;
 	}
 
-	public Admin(Long id, String name, String userGroup, String password) {
+	public Admin(Long id, String name, String userType, String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
-		this.userType = userGroup;
+		this.userType = userType;
 	}
 	
 	
