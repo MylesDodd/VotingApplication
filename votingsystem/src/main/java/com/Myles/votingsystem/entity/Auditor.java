@@ -58,8 +58,8 @@ public class Auditor {
 		return userType;
 	}
 
-	public void setUserGroup(String userGroup) {
-		this.userType = userGroup;
+	public void setUserGroup(String userType) {
+		this.userType = userType;
 	}
 
 	public Auditor(Long id, String name, String userGroup, String password) {
