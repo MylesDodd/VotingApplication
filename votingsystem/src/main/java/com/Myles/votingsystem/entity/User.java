@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.springframework.lang.Nullable;
-
+//creating the model for the user entity
 @Entity
 @Table(name="users")
 public class User {

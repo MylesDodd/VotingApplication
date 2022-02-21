@@ -19,7 +19,7 @@ import com.Myles.votingsystem.entity.User;
 import com.Myles.votingsystem.repositories.CadidateRepo;
 import com.Myles.votingsystem.repositories.UserRepo;
 
-
+//controller for all application actions
 @Controller
 public class VotingController {
 	
@@ -144,11 +144,13 @@ public class VotingController {
 		
 		int count = 0; 
 		List<User> Users = userRepo.findAll();
+		logger.info("finding all users in the user table");
 		for (User c : Users) 
 		{
 					count ++ ;	
 			
 		}
+		logger.info("iterated over all users and assigning ID to unique count");
 		
 		User User = new User();
 		User.setId((long)count+1);
@@ -158,7 +160,7 @@ public class VotingController {
 		User.setHasVoted(false);
 		
 		userRepo.save(User);
-		
+		logger.info("saving new user");
 		return "index.html";
 		
 	}
@@ -171,19 +173,21 @@ public class VotingController {
 		
 		int count = 0; 
 		List<Candidate> Candidates = candidateRepo.findAll();
+		logger.info("finding all candidates in the candidate table");
 		for (Candidate c : Candidates) 
 		{
 					count ++ ;	
 			
 		}
-		
+		logger.info("iterated over all candidates and assigning ID to unique count");
+
 		Candidate Candidate = new Candidate();
 		Candidate.setId((long)count+1);
 		Candidate.setName(name);
 		Candidate.setNumberOfVotes(0);
 		
 		candidateRepo.save(Candidate);
-		
+		logger.info("saving new candidate");
 		return "adminIndex.html";
 		
 	}
@@ -195,12 +199,13 @@ public class VotingController {
 		
 		int count = 0; 
 		List<User> Users = userRepo.findAll();
+		logger.info("finding all users in the user table");
 		for (User c : Users) 
 		{
 					count ++ ;	
 			
 		}
-		
+		logger.info("iterated over all users and assigning ID to unique count");
 		
 		User User = new User();
 		User.setId((long)count+1);
@@ -209,7 +214,7 @@ public class VotingController {
 		User.setUserType((long)3);
 		
 		userRepo.save(User);
-		
+		logger.info("saving new user");
 		return "adminIndex.html";
 		
 	}
